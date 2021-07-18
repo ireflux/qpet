@@ -77,8 +77,8 @@ class qpet:
             'B_UID': 0,
             'channel': 0,
             'g_ut': 1,
-            'cmd': 'fastSignWulin',
-            'ifFirstSign': 1
+            'cmd': 'fastSignWulin'
+            # 'ifFirstSign': 1
         }
         url = self.base_url + urlencode(params)
         result = self.content_parser(url, self.pattern_1)
@@ -552,12 +552,17 @@ class qpet:
             resp_bytes = self.get_content(url)
             result = etree.HTML(resp_bytes).xpath(self.pattern_1)
             if '选择帮派' in str(result):
-                gang_list = etree.HTML(resp_bytes).xpath('//div[@id="id"]/p/a[contains(@href, "op=rob")][last()]/@href')
+                gang_list = etree.HTML(resp_bytes).xpath('//div[@id="id"]/p/a[last()]/@href')
                 if gang_list:
-                    result = self.content_parser(self.protocol + gang_list[0], pattern_1)
+                    resp_bytes = self.get_content(self.protocol + gang_list[0])
+                    result = etree.HTML(resp_bytes).xpath(self.pattern_1)
+                    if '选择路线' in str(result):
+                        direction_list = etree.HTML(resp_bytes).xpath('//div[@id="id"]/p/a[last()]/@href')
+                        if direction_list:
+                            result = self.content_parser(self.protocol + direction_list[0], self.pattern_1)
             
             print(result[1]) if len(result) > 1 else print(result)
-            if '转转券不足' or '当前动作尚未完成' in str(result):
+            if '转转券不足' in str(result):
                 break
 
         # 领取活跃礼包
@@ -582,7 +587,7 @@ if __name__ == "__main__":
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
         'cookie': '',
-        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36'
+        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36'
     }
     # proxies = {'http': 'http://10.5.3.9:80', 'https': 'http://10.5.3.9:80'}
     proxies = {}
