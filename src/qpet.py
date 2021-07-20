@@ -374,7 +374,7 @@ class qpet:
         }
         url = self.base_url + urlencode(params)
         enemy_list = self.content_parser(url, '//div[@id="id"]/a[contains(@href, "cmd=manorfight")]/@href')
-        if len(enemy_list) > 0:
+        if enemy_list:
             result = self.content_parser(self.protocol + enemy_list[0], self.pattern_1)
             print(result[1]) if len(result) > 1 else print(result)
 
@@ -485,6 +485,38 @@ class qpet:
                         for i in range(30):
                             result = self.content_parser(url, self.pattern_1)
                             print(result[1]) if len(result) > 1 else print(result)
+
+        # 掠夺
+        print('----------掠夺----------')
+        params = {
+            'B_UID': 0,
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'forage_war',
+            'subtype': 3
+        }
+        if weekday == 1:
+            subtype_list = [3, 5]
+            for item in subtype_list:
+                params['subtype'] = item
+                url = self.base_url + urlencode(params)
+                if item == 3:
+                    granary_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "subtype=4")]/@href')
+                    exit_flag = False
+                    for granary in granary_list[::-1]:
+                        if exit_flag:
+                            break
+                        for i in range(20):
+                            result = self.content_parser(self.protocol + granary, self.pattern_1)
+                            print(result[1]) if len(result) > 1 else print(result)
+                            if '你已经没有足够的复活次数' in str(result):
+                                exit_flag = True
+                                break
+                else:
+                    result = self.content_parser(url, self.pattern_1)
+                    print(result[1]) if len(result) > 1 else print(result)
+        else:
+            print('粮草掠夺战每周二开启！')
 
         # 矿洞副本
         print('----------矿洞副本----------')
