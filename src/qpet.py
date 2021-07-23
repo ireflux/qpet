@@ -82,9 +82,9 @@ class qpet:
         }
         url = self.base_url + urlencode(params)
         result = self.content_parser(url, self.pattern_1)
-        print(result[1]) if len(result) > 1 else print(result)
+        print(result[2]) if len(result) > 2 else print(result[1])
 
-        # 武林盟主
+        # 武林盟主 领奖暂未添加
         print('----------武林盟主----------')
         signup_time = [0, 2, 4]
         if weekday in signup_time:
@@ -103,31 +103,27 @@ class qpet:
 
         # 巅峰之战
         print('----------巅峰之战----------')
-        if weekday > 1:
-            params = {
+        params = {
                 'channel': 0,
                 'g_ut': 1,
                 'cmd': 'gvg',
                 'sub': 5,
                 'group': 0,
                 'check': 1
-            }
-            url = self.base_url + urlencode(params)
-            for i in range(3):
+        }
+        # 5: 对战  4：随机加入 南/北 派  1：领取奖励
+        sub_list = [5, 4, 1]
+        for sub in sub_list:
+            params['sub'] = sub
+            if weekday > 1 and sub == 5:
+                url = self.base_url + urlencode(params)
+                for i in range(3):
+                    result = self.content_parser(url, self.pattern_1)
+                    print(result[2]) if len(result) > 2 else print(result)
+            elif sub != 5:
+                url = self.base_url + urlencode(params)
                 result = self.content_parser(url, self.pattern_1)
-                print(result[2]) if len(result) > 2 else print(result)
-        else:
-            # 随机加入 南/北 派
-            params['sub'] = 4
-            url = self.base_url + urlencode(params)
-            result = self.content_parser(url, self.pattern_1)
-            print(result[1]) if len(result) > 1 else print(result)
-
-            # 领取奖励
-            params['sub'] = 1
-            url = self.base_url + urlencode(params)
-            result = self.content_parser(url, self.pattern_1)
-            print(result[1]) if len(result) > 1 else print(result)
+                print(result[1]) if len(result) > 1 else print(result)
 
         # 历练
         print('----------历练----------')
@@ -166,8 +162,6 @@ class qpet:
             url = self.base_url + urlencode(params)
             if item == 'viewmem':
                 pattern = '//div[@id="id"]/a[contains(@href, "cmd=fight")][position()<5]/@href'
-            else:
-                pattern = '//div[@id="id"]/a[contains(@href, "cmd=fight")]/@href'
             friend_list = self.content_parser(url, pattern)
             for i in friend_list:
                 result = self.content_parser(self.protocol + i, self.pattern_1)
@@ -209,16 +203,13 @@ class qpet:
                     print(result[1]) if len(result) > 1 else print(result)
                     if '只能占领一个领地' in str(result):
                         break
-        # 问鼎天下-领取奖励
-        params = {
-            'channel': 0,
-            'g_ut': 1,
-            'cmd': 'tbattle',
-            'op': 'drawreward'
-        }
-        url = self.base_url + urlencode(params)
-        result = self.content_parser(url, self.pattern_1)
-        print(result[1]) if len(result) > 1 else print(result)
+
+            op_list = ['drawreleasereward', 'drawreward']
+            for op in op_list:
+                params['op'] = op
+                url = self.base_url + urlencode(params)
+                result = self.content_parser(url, self.pattern_1)
+                print(result[1]) if len(result) > 1 else print(result)
 
         # 梦想之旅
         print('----------梦想之旅----------')
@@ -248,10 +239,10 @@ class qpet:
         print('----------会武----------')
         if weekday > 4:
             params = {
-            'channel': 0,
-            'g_ut': 1,
-            'cmd': 'sectmelee',
-            'op': 'drawreward'
+                'channel': 0,
+                'g_ut': 1,
+                'cmd': 'sectmelee',
+                'op': 'drawreward'
             }
             url = self.base_url + urlencode(params)
             result = self.content_parser(url, self.pattern_1)
@@ -265,16 +256,19 @@ class qpet:
                 'cmd': 'secttournament',
                 'op': 'fight'
         }
-        if weekday > 1:
+        op_list = ['fight', 'signup']
+        for op in op_list:
+            params['op'] = op
             url = self.base_url + urlencode(params)
-            for i in range(5):
+            if weekday > 1 and op == 'fight':
+                for i in range(5):
+                    result = self.content_parser(url, self.pattern_1)
+                    print(result[1]) if len(result) > 1 else print(result)
+                    if '门派战书不足' in str(result):
+                        break
+            elif op == 'signup':
                 result = self.content_parser(url, self.pattern_1)
                 print(result[1]) if len(result) > 1 else print(result)
-        else:
-            params['op'] = 'signup'
-            url = self.base_url + urlencode(params)
-            result = self.content_parser(url, self.pattern_1)
-            print(result[1]) if len(result) > 1 else print(result)
 
         # 门派
         print('----------门派----------')
@@ -293,19 +287,20 @@ class qpet:
                 for enemy in enemy_list:
                     result = self.content_parser(self.protocol + enemy, self.pattern_1)
                     print(result[1]) if len(result) > 1 else print(result)
+                
+                # 领取任务奖励
+                params['cmd'] = 'sect_task'
+                url = self.base_url + urlencode(params)
+                reward_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "subtype=2")]/@href')
+                for item in reward_list:
+                    result = self.content_parser(self.protocol + item, self.pattern_1)
+                    print(result[1]) if len(result) > 1 else print(result)
             else:
                 result = self.content_parser(url, self.pattern_1)
                 if item == 'fumigatefreeincense':
                     print(result[2]) if len(result) > 2 else print(result)
                 else:
                     print(result[1]) if len(result) > 1 else print(result)
-
-        params['cmd'] = 'sect_task'
-        url = self.base_url + urlencode(params)
-        reward_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "subtype=2")]/@href')
-        for item in reward_list:
-            result = self.content_parser(self.protocol + item, self.pattern_1)
-            print(result[1]) if len(result) > 1 else print(result)
 
         # 群雄逐鹿
         print('----------群雄逐鹿----------')
@@ -446,6 +441,8 @@ class qpet:
                 for i in range(5):
                     result = self.content_parser(url, self.pattern_1)
                     print(result[1]) if len(result) > 1 else print(result)
+                    if '免费挑战次数已用完' in str(result):
+                        break
             else:
                 result = self.content_parser(url, self.pattern_1)
                 print(result[1]) if len(result) > 1 else print(result)
@@ -467,24 +464,27 @@ class qpet:
                 url = self.base_url + urlencode(params)
                 result = self.content_parser(url, self.pattern_1)
                 print(result[1]) if len(result) > 1 else print(result)
-        else:
+        elif weekday == 4:
             # 周五挑战
-            if weekday == 4:
-                subtype_list = [4, 2, 3]
-                for item in subtype_list:
-                    params['subtype'] = item
-                    url = self.base_url + urlencode(params)
-                    if item == 4:
+            subtype_list = [4, 2, 3]
+            for item in subtype_list:
+                params['subtype'] = item
+                url = self.base_url + urlencode(params)
+                if item == 4:
+                    result = self.content_parser(url, self.pattern_1)
+                    print(result[1]) if len(result) > 1 else print(result)
+                if item == 2:
+                    for i in range(5):
                         result = self.content_parser(url, self.pattern_1)
                         print(result[1]) if len(result) > 1 else print(result)
-                    if item == 2:
-                        for i in range(5):
-                            result = self.content_parser(url, self.pattern_1)
-                            print(result[1]) if len(result) > 1 else print(result)
-                    elif item == 3:
-                        for i in range(30):
-                            result = self.content_parser(url, self.pattern_1)
-                            print(result[1]) if len(result) > 1 else print(result)
+                        if '当前不在试练时间范围' in str(result):
+                            break
+                elif item == 3:
+                    for i in range(30):
+                        result = self.content_parser(url, self.pattern_1)
+                        print(result[1]) if len(result) > 1 else print(result)
+                        if '当前不在试练时间范围' in str(result):
+                            break
 
         # 掠夺
         print('----------掠夺----------')
@@ -495,28 +495,25 @@ class qpet:
             'cmd': 'forage_war',
             'subtype': 3
         }
-        if weekday == 1:
-            subtype_list = [3, 5]
-            for item in subtype_list:
-                params['subtype'] = item
-                url = self.base_url + urlencode(params)
-                if item == 3:
-                    granary_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "subtype=4")]/@href')
-                    exit_flag = False
-                    for granary in granary_list[::-1]:
-                        if exit_flag:
+        subtype_list = [3, 5, 6]
+        for item in subtype_list:
+            params['subtype'] = item
+            url = self.base_url + urlencode(params)
+            if weekday == 1 and item == 3:
+                granary_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "subtype=4")]/@href')
+                exit_flag = False
+                for granary in granary_list[::-1]:
+                    if exit_flag:
+                        break
+                    for i in range(20):
+                        result = self.content_parser(self.protocol + granary, self.pattern_1)
+                        print(result[1]) if len(result) > 1 else print(result)
+                        if '你已经没有足够的复活次数' in str(result):
+                            exit_flag = True
                             break
-                        for i in range(20):
-                            result = self.content_parser(self.protocol + granary, self.pattern_1)
-                            print(result[1]) if len(result) > 1 else print(result)
-                            if '你已经没有足够的复活次数' in str(result):
-                                exit_flag = True
-                                break
-                else:
-                    result = self.content_parser(url, self.pattern_1)
-                    print(result[1]) if len(result) > 1 else print(result)
-        else:
-            print('粮草掠夺战每周二开启！')
+            elif item != 3:
+                result = self.content_parser(url, self.pattern_1)
+                print(result[1]) if len(result) > 1 else print(result)
 
         # 矿洞副本
         print('----------矿洞副本----------')
@@ -530,6 +527,8 @@ class qpet:
         for i in range(3):
             result = self.content_parser(url, self.pattern_1)
             print(result[1]) if len(result) > 1 else print(result)
+            if '挑战次数不足' in str(result):
+                break
 
         # 一键完成每日任务
         print('----------一键完成每日任务----------')
@@ -607,8 +606,8 @@ class qpet:
             'giftbagid': 1,
             'action': 1
         }
-        for i in range(1,3):
-            params['giftbagid'] = i
+        for item in range(1,3):
+            params['giftbagid'] = item
             url = self.base_url + urlencode(params)
             result = self.content_parser(url, self.pattern_1)
             print(result[1]) if len(result) > 1 else print(result)
@@ -618,7 +617,7 @@ if __name__ == "__main__":
     protocol = 'https:'
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'cookie': '',
+        'cookie': 'uin=o0906374992; RK=pFJl9PneQe; ptcz=bac10d194edbf6e93d8f67c155302f91dec7d99020b37d109a2604a1497dcd21; webwx_data_ticket=gSe6yWbdxH4iyDF3eGUItPoI; skey=@arSDrSk39',
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36'
     }
     # proxies = {'http': 'http://10.5.3.9:80', 'https': 'http://10.5.3.9:80'}
