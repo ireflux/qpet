@@ -24,9 +24,43 @@ class qpet:
         content = self.get_content(url)
         return etree.HTML(content).xpath(pattern)
 
+    def print_banner(self):
+        print(
+            '''
+            
+                    _____ 
+______ _______________  /_
+_  __ `/__  __ \  _ \  __/
+/ /_/ /__  /_/ /  __/ /_  
+\__, / _  .___/\___/\__/  
+  /_/  /_/                
+
+            '''
+        )
+
     def main(self) -> None:
         # 获取星期(一到日 -> 0到6)
         weekday = date.today().weekday()
+
+        # Player Info
+        print('----------玩家信息----------')
+        params = {
+            'B_UID': 0,
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'index'
+        }
+        url = self.base_url + urlencode(params)
+        nick_name = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "cmd=totalinfo")]/text()')
+
+        keyword_list = ['等级', '体力:', '活力', '阅历', '战斗力']
+        all_text = self.content_parser(url, '//div[@id="id"]/p/text() | //div[@id="id"]/p/a/text()')
+        attributes = [item for item in all_text if any(keyword in item for keyword in keyword_list)]
+        
+        combat_power = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "cmd=viewselfpower")]/following::text()[1]')
+        attributes[-1] = attributes[-1] + combat_power[0]
+        player_info = nick_name + attributes
+        print('\n'.join(player_info))
 
         # 领取徒弟经验
         print('----------领取徒弟经验----------')
@@ -188,14 +222,14 @@ class qpet:
 
         # 问鼎天下
         print('----------问鼎天下----------')
-        if weekday < 5:
-            params = {
+        params = {
                 'B_UID': 0,
                 'channel': 0,
                 'g_ut': 1,
                 'cmd': 'tbattle'
-            }
-            url = self.base_url + urlencode(params)
+        }
+        url = self.base_url + urlencode(params)
+        if weekday < 5:
             area_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=occupy")][last()]/@href')
             if area_list:
                 for i in range(5):
@@ -209,6 +243,12 @@ class qpet:
                 params['op'] = op
                 url = self.base_url + urlencode(params)
                 result = self.content_parser(url, self.pattern_1)
+                print(result[1]) if len(result) > 1 else print(result)
+        else:
+            # 帮派助威
+            gang_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=cheerregionbattle")]/@href')
+            if gang_list:
+                result = self.content_parser(self.protocol + gang_list[0], self.pattern_1)
                 print(result[1]) if len(result) > 1 else print(result)
 
         # 梦想之旅
@@ -617,7 +657,7 @@ if __name__ == "__main__":
     protocol = 'https:'
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'cookie': 'uin=o0906374992; RK=pFJl9PneQe; ptcz=bac10d194edbf6e93d8f67c155302f91dec7d99020b37d109a2604a1497dcd21; webwx_data_ticket=gSe6yWbdxH4iyDF3eGUItPoI; skey=@arSDrSk39',
+        'cookie': '',
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36'
     }
     # proxies = {'http': 'http://10.5.3.9:80', 'https': 'http://10.5.3.9:80'}
@@ -627,4 +667,5 @@ if __name__ == "__main__":
     pattern_1 = '//div[@id="id"]/text() | //div[@id="id"]/p/text()'
 
     pet = qpet(base_url, protocol, headers, proxies, pattern_1)
+    pet.print_banner()
     pet.main()
