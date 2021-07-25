@@ -31,18 +31,28 @@ class qpet(object):
             'B_UID': 0,
             'channel': 0,
             'g_ut': 1,
-            'cmd': 'index'
+            'cmd': 'totalinfo',
+            'type': 1
         }
         url = self.base_url + urlencode(params)
-        nick_name = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "cmd=totalinfo")]/text()')
-
-        keyword_list = ['等级', '体力:', '活力', '阅历', '战斗力']
-        all_text = self.content_parser(url, '//div[@id="id"]/p/text() | //div[@id="id"]/p/a/text()')
-        attributes = [item for item in all_text if any(keyword in item for keyword in keyword_list)]
+        content = self.get_content(url)
+        all_text = etree.HTML(content).xpath('//div[@id="id"]/text()')
+        nick_name = etree.HTML(content).xpath('//div[@id="id"]/a[contains(@href, "cmd=ledouvip")]/preceding::text()[1]')
+        title = etree.HTML(content).xpath('//div[@id="id"]/a[contains(@href, "cmd=titleshow")]/text()')
+       
+        keyword_list = ['称号:', '竞技分段:', '帮派:', '等级:', '体力:', '活力:', '生命:', '敏捷:', '阅历:', '胜率:', '佣兵:']
+        player_info = [item for item in all_text if any(keyword in item for keyword in keyword_list)]
+        if player_info:
+            player_info[0] = player_info[0] + next(iter(title), '无')
+            win_rate = [item for item in player_info if '胜率' in item]
+            if win_rate:
+                win_rate_index = player_info.index(win_rate[0])
+                player_info[win_rate_index] = '战斗力' + player_info[win_rate_index]
         
-        combat_power = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "cmd=viewselfpower")]/following::text()[1]')
-        attributes[-1] = attributes[-1] + combat_power[0]
-        return nick_name + attributes
+        if nick_name:
+            player_info.insert(0, nick_name[0])
+
+        return player_info
 
     def print_banner(self) -> None:
         print(
