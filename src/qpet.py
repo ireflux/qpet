@@ -1,18 +1,19 @@
+from typing import ByteString, List
 import requests
 from urllib.parse import urlencode
 from lxml import etree
 from datetime import date
 
-class qpet:
+class qpet(object):
 
-    def __init__(self, base_url, protocol, headers, proxies, pattern_1) -> None:
+    def __init__(self, base_url: str, protocol: str, headers: str, proxies: str, pattern_1: str) -> None:
         self.protocol = protocol
         self.headers = headers
         self.proxies = proxies
         self.base_url = base_url
         self.pattern_1 = pattern_1
 
-    def get_content(self, url):
+    def get_content(self, url: str) -> ByteString:
         try:
             resp = requests.get(url, proxies = self.proxies, headers = self.headers)
             if 200 == resp.status_code:
@@ -20,29 +21,11 @@ class qpet:
         except requests.ConnectionError:
             return None
 
-    def content_parser(self, url, pattern):
+    def content_parser(self, url: str, pattern: str) -> List[str]:
         content = self.get_content(url)
         return etree.HTML(content).xpath(pattern)
 
-    def print_banner(self):
-        print(
-            '''
-            
-                    _____ 
-______ _______________  /_
-_  __ `/__  __ \  _ \  __/
-/ /_/ /__  /_/ /  __/ /_  
-\__, / _  .___/\___/\__/  
-  /_/  /_/                
-
-            '''
-        )
-
-    def main(self) -> None:
-        # 获取星期(一到日 -> 0到6)
-        weekday = date.today().weekday()
-
-        # Player Info
+    def get_player_info(self) -> List[str]:
         print('----------玩家信息----------')
         params = {
             'B_UID': 0,
@@ -59,7 +42,28 @@ _  __ `/__  __ \  _ \  __/
         
         combat_power = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "cmd=viewselfpower")]/following::text()[1]')
         attributes[-1] = attributes[-1] + combat_power[0]
-        player_info = nick_name + attributes
+        return nick_name + attributes
+
+    def print_banner(self) -> None:
+        print(
+            """
+            
+                    _____ 
+______ _______________  /_
+_  __ `/__  __ \  _ \  __/
+/ /_/ /__  /_/ /  __/ /_  
+\__, / _  .___/\___/\__/  
+  /_/  /_/                
+
+            """
+        )
+
+    def main(self) -> None:
+        # 获取星期(一到日 -> 0到6)
+        weekday = date.today().weekday()
+
+        # 获取玩家信息
+        player_info = self.get_player_info()
         print('\n'.join(player_info))
 
         # 领取徒弟经验
@@ -246,7 +250,8 @@ _  __ `/__  __ \  _ \  __/
                 print(result[1]) if len(result) > 1 else print(result)
         else:
             # 帮派助威
-            gang_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=cheerregionbattle")]/@href')
+            print(type(self.get_content(url)))
+            gang_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=cheerregionbattle") or contains(@href, "op=cheerchampionbattle")]/@href')
             if gang_list:
                 result = self.content_parser(self.protocol + gang_list[0], self.pattern_1)
                 print(result[1]) if len(result) > 1 else print(result)
