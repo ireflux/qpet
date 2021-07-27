@@ -630,13 +630,20 @@ _  __ `/__  __ \  _ \  __/
             'cmd': 'factionmine',
             'op': 'fight'
         }
-        url = self.base_url + urlencode(params)
-        for i in range(3):
-            result = self.content_parser(url, self.pattern_1)
-            print(result[1]) if len(result) > 1 else print(result)
-            if '挑战次数不足' in str(result):
-                break
-
+        op_list = ['fight', 'reward']
+        for op in op_list:
+            params['op'] = op
+            url = self.base_url + urlencode(params)
+            if op == 'fight':
+                for i in range(3):
+                    result = self.content_parser(url, self.pattern_1)
+                    print(result[1]) if len(result) > 1 else print(result)
+                    if '挑战次数不足' in str(result):
+                        break
+            elif op == 'reward':
+                result = self.content_parser(url, self.pattern_1)
+                print(result[1]) if len(result) > 1 else print(result)
+            
         # 全民乱斗
         print('----------全民乱斗----------')
         params = {
