@@ -119,6 +119,39 @@ _  __ `/__  __ \  _ \  __/
             result = self.content_parser(url, self.pattern_1)
             print(result[1]) if len(result) > 1 else print(result)
 
+        # 帮派远征军
+        print('----------帮派远征军----------')
+        params = {
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'factionarmy',
+            'op': 'viewIndex',
+            'island_id': 0
+        }
+        for island_id in range(5):
+            params['island_id'] = island_id
+            url = self.base_url + urlencode(params)
+            reward_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=getPointAward") or contains(@href, "op=getIslandAward")]/@href')
+            for reward in reward_list:
+                result = self.content_parser(self.protocol + reward, self.pattern_1)
+                print(result[1]) if len(result) > 1 else print(result)
+
+        # 任务派遣中心
+        print('----------任务派遣中心----------')
+        params = {
+            'B_UID': 0,
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'missionassign',
+            'subtype': 0
+        }
+        url = self.base_url + urlencode(params)
+        current_task_list = self.content_parser(url, '//div[@id="id"]/a[contains(@href, "subtype=1")]/@href')
+        reward_task_list = [item.replace('subtype=1', 'subtype=5') for item in current_task_list]
+        for reward in reward_task_list:
+            result = self.content_parser(self.protocol + reward, self.pattern_1)
+            print(result[1]) if len(result) > 1 else print(result)
+
         # 武林大会
         print('----------武林大会----------')
         params = {
@@ -603,6 +636,25 @@ _  __ `/__  __ \  _ \  __/
             print(result[1]) if len(result) > 1 else print(result)
             if '挑战次数不足' in str(result):
                 break
+
+        # 全民乱斗
+        print('----------全民乱斗----------')
+        params = {
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'luandou',
+            'op': 0,
+            'acttype': 2
+        }
+        acttype_list = [2, 3, 4]
+        for item in acttype_list:
+            params['acttype'] = item
+            url = self.base_url + urlencode(params)
+            reward_list = self.content_parser(url, '//div[@id="id"]/a[contains(@href, "op=8")]/@href')
+            for reward in reward_list:
+                result = self.content_parser(self.protocol + reward, self.pattern_1)
+                print(result[1]) if len(result) > 1 else print(result)
+        
 
         # 一键完成每日任务
         print('----------一键完成每日任务----------')
