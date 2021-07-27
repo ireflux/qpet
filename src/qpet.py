@@ -286,22 +286,41 @@ _  __ `/__  __ \  _ \  __/
             'cmd': 'factionleague',
             'op': 5
         }
-        url = self.base_url + urlencode(params)
-        result = self.content_parser(url, self.pattern_1)
-        print(result[0]) if len(result) > 0 else print(result)
+        # op: 2: 参加帮派黄金联赛 5 领取奖励
+        op_list = [5, 2]
+        for op in op_list:
+            params['op'] = op
+            url = self.base_url + urlencode(params)
+            result = self.content_parser(url, self.pattern_1)
+            print(result[0]) if len(result) > 0 else print(result)
 
         # 会武
         print('----------会武----------')
-        if weekday > 4:
-            params = {
-                'channel': 0,
-                'g_ut': 1,
-                'cmd': 'sectmelee',
-                'op': 'drawreward'
-            }
+        params = {
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'sectmelee',
+            'op': 'dotraining'
+        }
+        # dotraining: 试炼；cheer: 冠军助威；drawreward: 领奖
+        op_list = ['dotraining', 'cheer', 'drawreward']
+        for op in op_list:
+            params['op'] = op
             url = self.base_url + urlencode(params)
-            result = self.content_parser(url, self.pattern_1)
-            print(result[1]) if len(result) > 1 else print(result)
+            if weekday < 3:
+                if op == 'cheer':
+                    params['sect'] = 1003
+                    result = self.content_parser(url, self.pattern_1)
+                    print(result[2]) if len(result) > 2 else print(result)
+                elif op == 'dotraining':
+                    for i in range(15):
+                        result = self.content_parser(url, self.pattern_1)
+                        print(result[:4]) if len(result) > 3 else print(result)
+                        if '试炼书不足' in str(result):
+                            break
+            elif weekday > 4 and op == 'drawreward':
+                result = self.content_parser(url, self.pattern_1)
+                print(result[1]) if len(result) > 1 else print(result)
 
         # 门派邀请赛
         print('----------门派邀请赛----------')
@@ -496,7 +515,7 @@ _  __ `/__  __ \  _ \  __/
                 for i in range(5):
                     result = self.content_parser(url, self.pattern_1)
                     print(result[1]) if len(result) > 1 else print(result)
-                    if '免费挑战次数已用完' in str(result):
+                    if '免费挑战次数已用完' or '不在比赛时间内' in str(result):
                         break
             else:
                 result = self.content_parser(url, self.pattern_1)
