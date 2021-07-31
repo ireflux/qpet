@@ -1,5 +1,6 @@
 from typing import ByteString, List
 import requests
+import random
 from urllib.parse import urlencode
 from lxml import etree
 from datetime import date
@@ -200,7 +201,7 @@ _  __ `/__  __ \  _ \  __/
                 url = self.base_url + urlencode(params)
                 for i in range(3):
                     result = self.content_parser(url, self.pattern_1)
-                    print(result[2]) if len(result) > 2 else print(result)
+                    print(result[:3]) if len(result) > 2 else print(result)
             elif sub != 5:
                 url = self.base_url + urlencode(params)
                 result = self.content_parser(url, self.pattern_1)
@@ -277,10 +278,11 @@ _  __ `/__  __ \  _ \  __/
         }
         url = self.base_url + urlencode(params)
         if weekday < 5:
-            area_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=occupy")][last()]/@href')
+            area_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=occupy")]/@href')
             if area_list:
+                area = random.choice(area_list)
                 for i in range(5):
-                    result = self.content_parser(self.protocol + area_list[0], self.pattern_1)
+                    result = self.content_parser(self.protocol + area, self.pattern_1)
                     print(result[1]) if len(result) > 1 else print(result)
                     if '只能占领一个领地' in str(result):
                         break
@@ -296,7 +298,7 @@ _  __ `/__  __ \  _ \  __/
             print(type(self.get_content(url)))
             gang_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=cheerregionbattle") or contains(@href, "op=cheerchampionbattle")]/@href')
             if gang_list:
-                result = self.content_parser(self.protocol + gang_list[0], self.pattern_1)
+                result = self.content_parser(self.protocol + random.choice(gang_list), self.pattern_1)
                 print(result[1]) if len(result) > 1 else print(result)
 
         # 梦想之旅
@@ -326,6 +328,25 @@ _  __ `/__  __ \  _ \  __/
             url = self.base_url + urlencode(params)
             result = self.content_parser(url, self.pattern_1)
             print(result[0]) if len(result) > 0 else print(result)
+
+        # 仙武修真
+        print('----------仙武修真----------')
+        params = {
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'immortals',
+            'op': 'fightimmortals'
+        }
+        url = self.base_url + urlencode(params)
+        mountain_list = self.content_parser(url, '//div[@id="id"]/a[contains(@href, "op=visitimmortals")]/@href')
+        if mountain_list:
+            mountains = random.sample(mountain_list, 2)
+        for mountain in mountains:
+            # 选择寻访山脉
+            self.content_parser(self.protocol + mountain, self.pattern_1)
+            # fight
+            result = self.content_parser(url, self.pattern_1)
+            print(result)
 
         # 会武
         print('----------会武----------')
@@ -477,7 +498,7 @@ _  __ `/__  __ \  _ \  __/
         url = self.base_url + urlencode(params)
         enemy_list = self.content_parser(url, '//div[@id="id"]/a[contains(@href, "cmd=manorfight")]/@href')
         if enemy_list:
-            result = self.content_parser(self.protocol + enemy_list[0], self.pattern_1)
+            result = self.content_parser(self.protocol + random.choice(enemy_list), self.pattern_1)
             print(result[1]) if len(result) > 1 else print(result)
 
         # 画卷谜踪
