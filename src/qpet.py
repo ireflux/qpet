@@ -98,8 +98,8 @@ _  __ `/__  __ \  _ \  __/
             'op': 'draw',
             'key': 'meridian'
         }
-        key_list = ['meridian', 'login']
-        for item in key_list:
+        keys = ['meridian', 'login']
+        for item in keys:
             params['key'] = item
             url = self.base_url + urlencode(params)
             result = self.content_parser(url, self.pattern_1)
@@ -132,8 +132,8 @@ _  __ `/__  __ \  _ \  __/
         for island_id in range(5):
             params['island_id'] = island_id
             url = self.base_url + urlencode(params)
-            reward_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=getPointAward") or contains(@href, "op=getIslandAward")]/@href')
-            for reward in reward_list:
+            rewards = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=getPointAward") or contains(@href, "op=getIslandAward")]/@href')
+            for reward in rewards:
                 result = self.content_parser(self.protocol + reward, self.pattern_1)
                 print(result[1]) if len(result) > 1 else print(result)
 
@@ -346,7 +346,7 @@ _  __ `/__  __ \  _ \  __/
             self.content_parser(self.protocol + mountain, self.pattern_1)
             # fight
             result = self.content_parser(url, self.pattern_1)
-            print(result)
+            print(result[4]) if len(result) > 4 else print(result)
 
         # 会武
         print('----------会武----------')
@@ -683,6 +683,20 @@ _  __ `/__  __ \  _ \  __/
                 result = self.content_parser(self.protocol + reward, self.pattern_1)
                 print(result[1]) if len(result) > 1 else print(result)
         
+        # 帮派商会
+        print('----------帮派商会----------')
+        params = {
+            'B_UID': 0,
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'fac_corp',
+            'op': 0
+        }
+        url = self.base_url + urlencode(params)
+        gifts = self.content_parser(url, '//div[@id="id"]/a[contains(@href, "op=3")]/@href')
+        for gift in gifts:
+            result = self.content_parser(self.protocol + gift, self.pattern_1)
+            print(result[1]) if len(result) > 1 else print(result)
 
         # 一键完成每日任务
         print('----------一键完成每日任务----------')
