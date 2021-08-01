@@ -346,7 +346,7 @@ _  __ `/__  __ \  _ \  __/
             self.content_parser(self.protocol + mountain, self.pattern_1)
             # fight
             result = self.content_parser(url, self.pattern_1)
-            print(result)
+            print(result[4]) if len(result) > 4 else print(result)
 
         # 会武
         print('----------会武----------')
@@ -683,6 +683,20 @@ _  __ `/__  __ \  _ \  __/
                 result = self.content_parser(self.protocol + reward, self.pattern_1)
                 print(result[1]) if len(result) > 1 else print(result)
         
+        # 帮派商会
+        print('----------帮派商会----------')
+        params = {
+            'B_UID': 0,
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'fac_corp',
+            'op': 0
+        }
+        url = self.base_url + urlencode(params)
+        gifts = self.content_parser(url, '//div[@id="id"]/a[contains(@href, "op=3")]/@href')
+        for gift in gifts:
+            result = self.content_parser(self.protocol + gift, self.pattern_1)
+            print(result[1]) if len(result) > 1 else print(result)
 
         # 一键完成每日任务
         print('----------一键完成每日任务----------')
@@ -771,7 +785,7 @@ if __name__ == "__main__":
     protocol = 'https:'
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'cookie': '',
+        'cookie': 'RK=pFJl9PneQe; ptcz=bac10d194edbf6e93d8f67c155302f91dec7d99020b37d109a2604a1497dcd21; uin=o0906374992; skey=@DMSjPwbw8',
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36'
     }
     # proxies = {'http': 'http://10.5.3.9:80', 'https': 'http://10.5.3.9:80'}
