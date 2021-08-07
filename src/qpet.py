@@ -168,20 +168,34 @@ _  __ `/__  __ \  _ \  __/
 
         # 武林盟主 领奖暂未添加
         print('----------武林盟主----------')
-        signup_time = [0, 2, 4]
-        if weekday in signup_time:
-            params = {
+        params = {
                 'channel': 0,
                 'g_ut': 1,
                 'cmd': 'wlmz',
-                'op': 'signup',
-                'ground_id': 2
+                'op': 'signup'
             }
+        # 一三五报名
+        signup_time = [0, 2, 4]
+        # 二四六竞猜
+        guess_time = [1, 3, 5]
+        if weekday in signup_time:
+            params['ground_id'] = 2
             url = self.base_url + urlencode(params)
             result = self.content_parser(url, self.pattern_1)
             print(result[1]) if len(result) > 1 else print(result)
-        else:
-            print('仅周一、周三、周五可报名')
+        elif weekday in guess_time:
+            # 选择玩家
+            params['op'] = 'view_guess'
+            url = self.base_url + urlencode(params)
+            player_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=guess_up")]/@href')
+            if player_list:
+                select_result = self.content_parser(self.protocol + player_list[0], self.pattern_1)
+                print(select_result[1]) if len(select_result) > 1 else print(select_result)
+                # 确认竞猜
+                params['op'] = 'comfirm'
+                url = self.base_url + urlencode(params)
+                result = self.content_parser(url, self.pattern_1)
+                print(result[1]) if len(result) > 1 else print(result[1])
 
         # 巅峰之战
         print('----------巅峰之战----------')
@@ -785,7 +799,7 @@ if __name__ == "__main__":
     protocol = 'https:'
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'cookie': 'RK=pFJl9PneQe; ptcz=bac10d194edbf6e93d8f67c155302f91dec7d99020b37d109a2604a1497dcd21; uin=o0906374992; skey=@DMSjPwbw8',
+        'cookie': '',
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36'
     }
     # proxies = {'http': 'http://10.5.3.9:80', 'https': 'http://10.5.3.9:80'}
