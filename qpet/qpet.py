@@ -4,6 +4,7 @@ import random
 from urllib.parse import urlencode
 from lxml import etree
 from datetime import date
+import time
 
 class qpet(object):
 
@@ -335,8 +336,8 @@ _  __ `/__  __ \  _ \  __/
             'cmd': 'factionleague',
             'op': 5
         }
-        # op: 2: 参加帮派黄金联赛 5 领取奖励
-        op_list = [5, 2]
+        # op: 2: 参加帮派黄金联赛 5: 领取奖励 7: 领取帮派赛季奖励
+        op_list = [7, 5, 2]
         for op in op_list:
             params['op'] = op
             url = self.base_url + urlencode(params)
@@ -576,6 +577,7 @@ _  __ `/__  __ \  _ \  __/
             'op': 'challenge'
         }
         op_list = ['challenge', 'drawdaily']
+        interrupt_signal = ['免费挑战次数已用完', '不在比赛时间内']
         for item in op_list:
             params['op'] = item
             url = self.base_url + urlencode(params)
@@ -583,7 +585,7 @@ _  __ `/__  __ \  _ \  __/
                 for i in range(5):
                     result = self.content_parser(url, self.pattern_1)
                     print(result[1]) if len(result) > 1 else print(result)
-                    if '免费挑战次数已用完' or '不在比赛时间内' in str(result):
+                    if any(item in str(result) for item in interrupt_signal):
                         break
             else:
                 result = self.content_parser(url, self.pattern_1)
@@ -648,6 +650,7 @@ _  __ `/__  __ \  _ \  __/
                     if exit_flag:
                         break
                     for i in range(20):
+                        time.sleep(1.5)
                         result = self.content_parser(self.protocol + granary, self.pattern_1)
                         print(result[1]) if len(result) > 1 else print(result)
                         if '你已经没有足够的复活次数' in str(result):
