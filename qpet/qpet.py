@@ -734,6 +734,18 @@ class qpet(object):
             result = self.content_parser(self.protocol + item, self.pattern_1)
             print(result)
 
+        # 帮派任务
+        print('----------领取帮战奖励----------')
+        params = {
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'facwar',
+            'sub': 4
+        }
+        url = self.base_url + urlencode(params)
+        result = self.content_parser(url, self.pattern_1)
+        print(result[3]) if len(result) > 3 else print(result)
+
         # 一键分享
         print('----------一键分享----------')
         params = {
