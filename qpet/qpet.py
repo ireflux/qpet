@@ -57,18 +57,9 @@ class qpet(object):
         return player_info
 
     def print_banner(self) -> None:
-        print(
-            """
-            
-                    _____ 
-______ _______________  /_
-_  __ `/__  __ \  _ \  __/
-/ /_/ /__  /_/ /  __/ /_  
-\__, / _  .___/\___/\__/  
-  /_/  /_/                
-
-            """
-        )
+        with open('banner.txt', 'r') as f:
+            for line in f:
+                print(line.rstrip())
 
     def main(self) -> None:
         # 获取星期(一到日 -> 0到6)
@@ -466,12 +457,13 @@ _  __ `/__  __ \  _ \  __/
             'B_UID': 0,
             'channel': 0,
             'g_ut': 1,
-            'cmd': 'misty',
-            'stage_id': 8,
-            'box_id': 2,
-            'op': 'fight'
+            'cmd': 'misty'
         }
-        op_list = ['return', 'start', 'fight', 'reward']
+        url = self.base_url + urlencode(params)
+        area_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=start")][last()]/@href')
+        if area_list:
+            self.content_parser(self.protocol + area_list[0], self.pattern_1)
+        op_list = ['fight', 'reward', 'return']
         for item in op_list:
             params['op'] = item
             if 'fight' == item:
