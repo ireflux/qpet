@@ -472,6 +472,7 @@ class qpet(object):
                     result = self.content_parser(url, self.pattern_1)
                     print(result[3]) if len(result) > 3 else print(result)
             else:
+                params['box_id'] = 3
                 url = self.base_url + urlencode(params)
                 result = self.content_parser(url, self.pattern_1)
                 print(result[3]) if len(result) > 3 else print(result)
@@ -592,9 +593,10 @@ class qpet(object):
             'cmd': 'facchallenge',
             'subtype': 7
         }
+        # subtype: 1:报名, 2:试炼, 3:挑战, 4:高倍转盘, 7:领奖, 13:排行奖励
         # 周六日领取
         if weekday > 4:
-            subtype_list = [7, 13]
+            subtype_list = [7, 13, 1]
             for item in subtype_list:
                 params['subtype'] = item
                 url = self.base_url + urlencode(params)
@@ -734,7 +736,7 @@ class qpet(object):
             result = self.content_parser(self.protocol + item, self.pattern_1)
             print(result)
 
-        # 帮派任务
+        # 领取帮战奖励
         print('----------领取帮战奖励----------')
         params = {
             'channel': 0,
