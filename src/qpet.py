@@ -57,7 +57,7 @@ class qpet(object):
         return player_info
 
     def print_banner(self) -> None:
-        with open('banner.txt', 'r') as f:
+        with open('banner.txt', 'r', encoding='utf-8') as f:
             for line in f:
                 print(line.rstrip())
 
@@ -605,6 +605,7 @@ class qpet(object):
         elif weekday == 4:
             # 周五挑战
             subtype_list = [4, 2, 3]
+            interrupt_signal = ['您的复活次数已耗尽', '当前不在试练时间范围']
             for item in subtype_list:
                 params['subtype'] = item
                 url = self.base_url + urlencode(params)
@@ -615,13 +616,13 @@ class qpet(object):
                     for i in range(5):
                         result = self.content_parser(url, self.pattern_1)
                         print(result[1]) if len(result) > 1 else print(result)
-                        if '当前不在试练时间范围' in str(result):
+                        if any(item in str(result) for item in interrupt_signal):
                             break
                 elif item == 3:
                     for i in range(30):
                         result = self.content_parser(url, self.pattern_1)
                         print(result[1]) if len(result) > 1 else print(result)
-                        if '当前不在试练时间范围' in str(result):
+                        if any(item in str(result) for item in interrupt_signal):
                             break
 
         # 掠夺
