@@ -5,6 +5,7 @@ from urllib.parse import urlencode
 from lxml import etree
 from datetime import date
 import time
+import os
 
 class qpet(object):
 
@@ -56,8 +57,9 @@ class qpet(object):
 
         return player_info
 
-    def print_banner(self) -> None:
-        with open('banner.txt', 'r', encoding='utf-8') as f:
+    def print_banner(self, banner_path) -> None:
+        path = os.path.join(os.path.dirname(__file__), banner_path)
+        with open(path, 'r', encoding='utf-8') as f:
             for line in f:
                 print(line.rstrip())
 
@@ -815,9 +817,9 @@ if __name__ == "__main__":
     # proxies = {'http': 'http://10.5.3.9:80', 'https': 'http://10.5.3.9:80'}
     proxies = {}
     base_url = 'https://dld.qzapp.z.qq.com/qpet/cgi-bin/phonepk?'
-
     pattern_1 = '//div[@id="id"]/text() | //div[@id="id"]/p/text()'
+    banner_path = './banner.txt'
 
     pet = qpet(base_url, protocol, headers, proxies, pattern_1)
-    pet.print_banner()
+    pet.print_banner(banner_path)
     pet.main()
