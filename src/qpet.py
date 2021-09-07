@@ -813,8 +813,8 @@ if __name__ == "__main__":
     protocol = 'https:'
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'cookie': 'RK=pFJl9PneQe; ptcz=bac10d194edbf6e93d8f67c155302f91dec7d99020b37d109a2604a1497dcd21; pgv_pvid=1393064237; eas_sid=m1g6w2K8M1W6h9x0f3D133J2K8; uin_cookie=o0906374992; ied_qq=o0906374992; LOLWebSet_AreaBindInfo_906374992=%257B%2522areaid%2522%253A%252212%2522%252C%2522areaname%2522%253A%2522%25E6%2597%25A0%25E7%2595%258F%25E5%2585%2588%25E9%2594%258B%2520%25E7%25BD%2591%25E9%2580%259A%2522%252C%2522sRoleId%2522%253A0%252C%2522roleid%2522%253A%2522906374992%2522%252C%2522rolename%2522%253A%2522EXITadmin%2522%252C%2522checkparam%2522%253A%2522lol%257Cyes%257C906374992%257C12%257C906374992*%257C%257C%257C%257CEXITadmin*%257C%257C%257C1628169758%257C%2522%252C%2522md5str%2522%253A%252277AF63C9CB18FDA3CF5A84A6231F86D4%2522%252C%2522roleareaid%2522%253A%252212%2522%252C%2522sPartition%2522%253A%252212%2522%257D; tvfe_boss_uuid=ef9f274d884f1e5a; pac_uid=0_35ec0a7d1f314; iip=0; webwx_data_ticket=gSdaaPE4CQMsQ9MGq77vai1E; uin=o0906374992; skey=@7tQ87jwCE',
-        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36'
+        'cookie': '',
+        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36'
     }
     # proxies = {'http': 'http://10.5.3.9:80', 'https': 'http://10.5.3.9:80'}
     proxies = {}
