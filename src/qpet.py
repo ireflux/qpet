@@ -774,6 +774,7 @@ class qpet(object):
             'cmd': 'altar',
             'op': 'spinwheel'
         }
+        interrupt_signal = ['转转券不足', '该帮派已解散']
         url = self.base_url + urlencode(params)
         for i in range(11):
             resp_bytes = self.get_content(url)
@@ -789,7 +790,7 @@ class qpet(object):
                             result = self.content_parser(self.protocol + direction_list[0], self.pattern_1)
             
             print(result[1]) if len(result) > 1 else print(result)
-            if '转转券不足' in str(result):
+            if any(item in str(result) for item in interrupt_signal):
                 break
 
         # 领取活跃礼包
