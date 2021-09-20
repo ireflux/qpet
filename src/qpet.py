@@ -173,10 +173,12 @@ class qpet(object):
         # 二四六竞猜
         guess_time = [1, 3, 5]
         if weekday in signup_time:
-            params['ground_id'] = 2
-            url = self.base_url + urlencode(params)
-            result = self.content_parser(url, self.pattern_1)
-            print(result[1]) if len(result) > 1 else print(result)
+            # 黄金(战力>2000)/白银(战力>1000)/青铜(战力>200) 赛场，懒得取战力判断，还是这样简单粗暴的省事儿
+            for i in range(1,4):
+                params['ground_id'] = i
+                url = self.base_url + urlencode(params)
+                result = self.content_parser(url, self.pattern_1)
+                print(result[1]) if len(result) > 1 else print(result)
         elif weekday in guess_time:
             # 选择玩家
             params['op'] = 'view_guess'
