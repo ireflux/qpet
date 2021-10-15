@@ -331,8 +331,8 @@ class qpet(object):
             'cmd': 'factionleague',
             'op': 5
         }
-        # op: 2: 参加帮派黄金联赛 5: 领取奖励 7: 领取帮派赛季奖励
-        op_list = [7, 5, 2]
+        # op: 1: 参加帮派黄金联赛 5: 领取奖励 7: 领取帮派赛季奖励
+        op_list = [7, 5, 1]
         for op in op_list:
             params['op'] = op
             url = self.base_url + urlencode(params)
@@ -819,7 +819,6 @@ if __name__ == "__main__":
         'cookie': '',
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36'
     }
-    # proxies = {'http': 'http://10.5.3.9:80', 'https': 'http://10.5.3.9:80'}
     proxies = {}
     base_url = 'https://dld.qzapp.z.qq.com/qpet/cgi-bin/phonepk?'
     pattern_1 = '//div[@id="id"]/text() | //div[@id="id"]/p/text()'
