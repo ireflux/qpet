@@ -18,16 +18,13 @@ _  __ `/__  __ \  _ \  __/
 
 ## 使用
 
-首先安装依赖：
+1. fork 本项目到自己的仓库
+2. 进入自己仓库中的 `qpet`，依次点击 `Setting -> Secrets -> New repository secret`
+3. 登录[Q宠大乐斗](https://dld.qzapp.z.qq.com/qpet/cgi-bin/phonepk?cmd=index&channel=0)获取cookie
+4. 添加 `Name` 为 QPET_COOKIE，`Value` 为获取的 cookie
 
-```bash
-pip install -r requirements.txt
-```
+完
 
-然后自行从请求中获取 cookie，填写到 header 中的 cookie 中
+# 友情提示
 
-运行：
-
-```bash
-python qpet.py
-```
+大乐斗的 cookie 有效时间很短，好像只有一天。

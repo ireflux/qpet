@@ -812,12 +812,12 @@ class qpet(object):
             print(result[1]) if len(result) > 1 else print(result)
 
 if __name__ == "__main__":
-    token = os.environ["QPET_TOKEN"]
+    cookie = os.environ["QPET_COOKIE"]
 
     protocol = 'https:'
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'cookie': token,
+        'cookie': cookie,
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36'
     }
     proxies = {}

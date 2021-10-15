@@ -5,6 +5,7 @@ name: Python application
 
 on:
   schedule:
+    # 北京时间下午一点零五分
     - cron:  '5 5 * * *'
 
 jobs:
@@ -24,6 +25,6 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: run qpet
       env: 
-        QPET_TOKEN: ${{ secrets.QPET_TOKEN }}
+        QPET_COOKIE: ${{ secrets.QPET_COOKIE }}
       run: |
         python src/qpet.py
