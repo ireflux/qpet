@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Python application
+name: qpet job
 
 on:
   schedule:
@@ -10,9 +10,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
@@ -26,5 +24,7 @@ jobs:
     - name: run qpet
       env: 
         QPET_COOKIE: ${{ secrets.QPET_COOKIE }}
+        SERVERJ_SEND_KEY: ${{ secrets.SERVERJ_SEND_KEY }}
       run: |
-        python src/qpet.py
+        python src/qpet.py > result.txt
+        python src/sender.py

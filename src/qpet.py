@@ -7,7 +7,7 @@ from datetime import date
 import time
 import os
 
-class qpet(object):
+class qpet:
 
     def __init__(self, base_url: str, protocol: str, headers: str, proxies: str, pattern_1: str) -> None:
         self.protocol = protocol
@@ -821,6 +821,7 @@ if __name__ == "__main__":
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36'
     }
     proxies = {}
+    # Q宠大乐斗地址
     base_url = 'https://dld.qzapp.z.qq.com/qpet/cgi-bin/phonepk?'
     pattern_1 = '//div[@id="id"]/text() | //div[@id="id"]/p/text()'
     banner_path = './banner.txt'
