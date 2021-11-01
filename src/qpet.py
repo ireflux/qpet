@@ -804,121 +804,84 @@ class qpet:
             print(result[1]) if len(result) > 1 else print(result)
 
     def main(self):
-
         print('----------玩家信息----------')
         player_info = self.get_player_info()
         print('\n'.join(player_info))
 
         print('----------领取徒弟经验----------')
-        print(self.exp())
-
+        self.exp()
         print('----------每日奖励----------')
-        print(self.daily_gift())
-
+        self.daily_gift()
         print('----------邪神秘宝----------')
-        print(self.ten_lottery())
-
+        self.ten_lottery()
         print('----------帮派远征军----------')
-        print(self.faction_army())
-        
+        self.faction_army()
         print('----------任务派遣中心----------')
-        print(self.mission_dispatch_center())
-        
+        self.mission_dispatch_center()
         print('----------武林大会----------')
-        print(self.martial_arts_conference())
-
+        self.martial_arts_conference()
         print('----------武林盟主----------')
-        print(self.martial_lord())
-        
+        self.martial_lord()
         print('----------巅峰之战----------')
-        print(self.decisive_battle())
-        
+        self.decisive_battle()
         print('----------历练----------')
-        print(self.adventure())
-        
+        self.adventure()
         print('----------好友对战----------')
-        print(self.friends_battle())
-        
+        self.friends_battle()
         print('----------侠士客栈----------')
-        print(self.warrior_inn())
-
+        self.warrior_inn()
         print('----------问鼎天下----------')
-        print(self.resource_battle())
-        
+        self.resource_battle()
         print('----------梦想之旅----------')
-        print(self.dream_trip())
-
+        self.dream_trip()
         print('----------帮派黄金联赛----------')
-        print(self.faction_league())
-        
+        self.faction_league()   
         print('----------仙武修真----------')
-        print(self.immortals())
-
+        self.immortals()
         print('----------会武----------')
-        print(self.sect_melee())
-
+        self.sect_melee()
         print('----------门派邀请赛----------')
-        print(self.sect_tournament())
-
+        self.sect_tournament()
         print('----------门派----------')
-        print(self.sect())
-
+        self.sect()
         print('----------群雄逐鹿----------')
-        print(self.thrones_battle())
-
+        self.thrones_battle()
         print('----------幻境----------')
-        print(self.misty())
-
+        self.misty()
         print('----------斗神塔----------')
-        print(self.tower_fight())
-
+        self.tower_fight()
         print('----------抢地盘----------')
-        print(self.grab_territory())
-
+        self.grab_territory()
         print('----------画卷谜踪----------')
-        print(self.scroll_dungeon())
-
+        self.scroll_dungeon()
         print('----------十二宫----------')
-        print(self.zodiac_dungeon())
-
+        self.zodiac_dungeon()
         print('----------镖行天下----------')
-        print(self.escort_cargo())
-
+        self.escort_cargo()
         print('----------竞技场----------')
-        print(self.arena())
-
+        self.arena()
         print('----------踢馆----------')
-        print(self.challenge())
-
+        self.challenge()
         print('----------掠夺----------')
-        print(self.forage_war())
-
+        self.forage_war()
         print('----------矿洞副本----------')
-        print(self.mine_cave())
-            
+        self.mine_cave()    
         print('----------全民乱斗----------')
-        print(self.chaos_fight())
-        
+        self.chaos_fight()  
         print('----------帮派商会----------')
-        print(self.gang_market())
-
+        self.gang_market()
         print('----------一键完成每日任务----------')
-        print(self.common_mission())
-        
+        self.common_mission()
         print('----------帮派任务----------')
-        print(self.gang_mission())
-
+        self.gang_mission()
         print('----------领取帮战奖励----------')
-        print(self.gang_reward())
-
+        self.gang_reward()
         print('----------一键分享----------')
-        print(self.share_game())
-
+        self.share_game()
         print('----------帮派祭坛----------')
-        print(self.gang_altar())
-
+        self.gang_altar()
         print('----------领取活跃礼包----------')
-        print(self.get_active_reward())
+        self.get_active_reward()
 
 if __name__ == "__main__":
     cookie = os.environ["QPET_COOKIE"]
