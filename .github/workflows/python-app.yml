@@ -4,6 +4,7 @@
 name: qpet job
 
 on:
+  workflow_dispatch:
   schedule:
     # 北京时间下午一点零五分
     - cron:  '5 5 * * *'
