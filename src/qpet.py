@@ -156,15 +156,22 @@ class qpet:
     # 武林盟主
     def martial_lord(self) -> str:
         params = {
+                'B_UID': 0,
                 'channel': 0,
                 'g_ut': 1,
                 'cmd': 'wlmz',
-                'op': 'signup'
+                'op': 'view_index'
         }
         # 一三五报名
         signup_time = [0, 2, 4]
         # 二四六竞猜
         guess_time = [1, 3, 5]
+        # 领取奖励
+        url = self.base_url + urlencode(params)
+        reward_url_list = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=get_award")]/@href')
+        for reward_url in reward_url_list:
+            result = self.content_parser(self.protocol + reward_url, self.pattern_1)
+            print(result[1]) if len(result) > 1 else print(result)
         if self.weekday in signup_time:
             params['op'] = 'signup'
             # 黄金(战力>2000)/白银(战力>1000)/青铜(战力>200) 赛场，懒得取战力判断，还是这样简单粗暴的省事儿
@@ -534,7 +541,8 @@ class qpet:
         }
         url = self.base_url + urlencode(params)
         result = self.content_parser(url, self.pattern_1)
-        print(result)
+        result_str = '\n'.join(result)
+        print(result_str)
 
     # 镖行天下
     def escort_cargo(self):
@@ -719,7 +727,8 @@ class qpet:
         }
         url = self.base_url + urlencode(params)
         result = self.content_parser(url, self.pattern_1)
-        print(result)
+        result_str = '\n'.join(result)
+        print(result_str)
 
     # 帮派任务
     def gang_mission(self):
@@ -803,6 +812,30 @@ class qpet:
             result = self.content_parser(url, self.pattern_1)
             print(result[1]) if len(result) > 1 else print(result)
 
+    # 领取活动免费礼包
+    def get_special_event(self):
+        params = {
+            'B_UID': 0,
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'pacfg'
+        }
+        
+        free_rewards = {'cmd=newAct&subtype=88': '神魔大转盘',
+                        'cmd=newAct&subtype=124': '开心娃娃机',
+                        'cmd=newAct&subtype=43': '每日好礼步步升'
+        }
+        url = self.base_url + urlencode(params)
+        all_activity_url = self.content_parser(url, '//div[@id="id"]/p/a/@href')
+        url_list = [item for item in all_activity_url if any(reward_url in item for reward_url in list(free_rewards))]
+        for url in url_list:
+            reward_url = self.content_parser(self.protocol + url, '//div[@id="id"]/p/a[contains(@href, "op=1")]/@href')
+            if reward_url:
+                result = self.content_parser(self.protocol + reward_url[0], self.pattern_1)
+                print(result[1]) if len(result) > 1 else print(result)
+            
+
+
     def main(self):
         print('----------玩家信息----------')
         player_info = self.get_player_info()
@@ -882,6 +915,8 @@ class qpet:
         self.gang_altar()
         print('----------领取活跃礼包----------')
         self.get_active_reward()
+        print('----------领取活动免费礼包----------')
+        self.get_special_event()
 
 if __name__ == "__main__":
     cookie = os.environ["QPET_COOKIE"]
