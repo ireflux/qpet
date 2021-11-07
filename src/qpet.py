@@ -830,7 +830,7 @@ class qpet:
         url_list = [item for item in all_activity_url if any(reward_url in item for reward_url in list(free_rewards))]
         reward_url = []
         for url in url_list:
-            if url == 'cmd=newAct&subtype=43':
+            if 'cmd=newAct&subtype=43' in url:
                 reward_url = self.content_parser(self.protocol + url, '//div[@id="id"]/p/a[contains(@href, "op=get")]/@href')
             else:
                 reward_url = self.content_parser(self.protocol + url, '//div[@id="id"]/p/a[contains(@href, "op=1")]/@href')
