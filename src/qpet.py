@@ -774,10 +774,18 @@ class qpet:
             'B_UID': 0,
             'channel': 0,
             'g_ut': 1,
-            'cmd': 'altar',
-            'op': 'spinwheel'
+            'cmd': 'altar'
         }
+        # 高级祭坛升级满了之后会有祭祀奖励。领取祭祀奖励，如果存在的话
+        url = self.base_url + urlencode(params)
+        reward_urls = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=drawreward")]/@href')
+        if reward_urls:
+            result = self.content_parser(self.protocol + reward_urls[0], self.pattern_1)
+            print(result[1]) if len(result) > 1 else print(result)
+
+        # 祭坛转盘
         interrupt_signal = ['转转券不足', '该帮派已解散']
+        params['op'] = 'spinwheel'
         url = self.base_url + urlencode(params)
         for i in range(11):
             resp_bytes = self.get_content(url)

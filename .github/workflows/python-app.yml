@@ -26,6 +26,8 @@ jobs:
       env: 
         QPET_COOKIE: ${{ secrets.QPET_COOKIE }}
         SERVERJ_SEND_KEY: ${{ secrets.SERVERJ_SEND_KEY }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: |
         python src/qpet.py > result.txt
         python src/sender.py

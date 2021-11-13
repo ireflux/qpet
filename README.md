@@ -22,7 +22,8 @@ _  __ `/__  __ \  _ \  __/
 2. 登录[Q宠大乐斗](https://dld.qzapp.z.qq.com/qpet/cgi-bin/phonepk?cmd=index&channel=0)获取 cookie
 3. 进入自己仓库中的 `qpet`，依次进入 `Setting -> Secrets -> New repository secret`
 4. 添加 Name 为 `QPET_COOKIE`，Value 为 `获取到的 cookie`
-5. 微信接收运行日志(可选): 添加 Name 为 `SERVERJ_SEND_KEY`，Value 为从[Server酱](https://sct.ftqq.com/)获取到的 `SENDKEY`
+5. (可选)微信接收运行日志: 添加 Name 为 `SERVERJ_SEND_KEY`，Value 为从[Server酱](https://sct.ftqq.com/)获取到的 `SENDKEY`
+6. (可选) Telegram 接收运行日志: 添加 Name 为 `TELEGRAM_BOT_TOKEN`，Value 为 Telegram Bot 的 token；添加 Name 为 `TELEGRAM_CHAT_ID`，Value 为获取到的 chat_id. 具体创建 Telegram Bot，获取 token 和 chat_id 的操作流程可查看[Telegram Bot API](https://core.telegram.org/bots/api#getting-updates)文档
 
 ## 提示
 
