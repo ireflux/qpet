@@ -649,6 +649,7 @@ class qpet:
                     if exit_flag:
                         break
                     while True:
+                        # 停顿1.5秒
                         time.sleep(1.5)
                         result = self.content_parser(self.protocol + granary, self.pattern_1)
                         print(result[1]) if len(result) > 1 else print(result)
@@ -846,8 +847,6 @@ class qpet:
                 result = self.content_parser(self.protocol + reward_url[0], self.pattern_1)
                 print(result[1]) if len(result) > 1 else print(result)
             
-
-
     def main(self):
         print('----------玩家信息----------')
         player_info = self.get_player_info()
@@ -931,7 +930,10 @@ class qpet:
         self.get_special_event()
 
 if __name__ == "__main__":
-    cookie = os.environ["QPET_COOKIE"]
+    try:
+        cookie = os.environ["QPET_COOKIE"]
+    except Exception:
+        raise ValueError
 
     protocol = 'https:'
     headers = {
