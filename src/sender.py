@@ -12,10 +12,10 @@ class SendMessage:
         serverJ_send_key = os.environ["SERVERJ_SEND_KEY"]
         if serverJ_send_key:
             url = f'https://sctapi.ftqq.com/{serverJ_send_key}.send'
-            title = 'Q宠大乐斗脚本执行详情'
+            desp = self.content.replace('\n', '\n\n')
             data = {
-                'title': title,
-                'desp': self.content
+                'title': 'Q宠大乐斗脚本执行详情',
+                'desp': desp
             }
             return requests.post(url, data)
 
@@ -27,15 +27,12 @@ class SendMessage:
             url = f'https://api.telegram.org/bot{telegram_bot_token}/sendMessage'
             data = {
                 'chat_id': telegram_chat_id,
-                'text': self.content,
-                'parse_mode': 'MarkdownV2'
+                'text': self.content
             }
             return requests.post(url, data)
 
 if __name__ == "__main__":
     content = Path('./result.txt').read_text()
-    content = content.replace('\n', '\n\n')
-        
     sm = SendMessage(content)
     sm.send_to_serverJ()
     sm.send_to_telegram()
