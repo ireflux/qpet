@@ -832,7 +832,8 @@ class qpet:
         
         free_rewards = {'cmd=newAct&subtype=88': '神魔大转盘',
                         'cmd=newAct&subtype=124': '开心娃娃机',
-                        'cmd=newAct&subtype=43': '每日好礼步步升'
+                        'cmd=newAct&subtype=43': '每日好礼步步升',
+                        'cmd=menuact': '乐斗菜单'
         }
         url = self.base_url + urlencode(params)
         all_activity_url = self.content_parser(url, '//div[@id="id"]/p/a/@href')
@@ -841,11 +842,19 @@ class qpet:
         for url in url_list:
             if 'cmd=newAct&subtype=43' in url:
                 reward_url = self.content_parser(self.protocol + url, '//div[@id="id"]/p/a[contains(@href, "op=get")]/@href')
+                if reward_url:
+                    result = self.content_parser(self.protocol + reward_url[0], self.pattern_1)
+                    print(result[1]) if len(result) > 1 else print(result)
+            elif 'cmd=menuact' in url:
+                reward_url = self.content_parser(self.protocol + url, '//div[@id="id"]/a[last()]/@href')
+                if reward_url:
+                    result = self.content_parser(self.protocol + reward_url[0], self.pattern_1)
+                    print(result[4]) if len(result) > 4 else print(result)
             else:
                 reward_url = self.content_parser(self.protocol + url, '//div[@id="id"]/p/a[contains(@href, "op=1")]/@href')
-            if reward_url:
-                result = self.content_parser(self.protocol + reward_url[0], self.pattern_1)
-                print(result[1]) if len(result) > 1 else print(result)
+                if reward_url:
+                    result = self.content_parser(self.protocol + reward_url[0], self.pattern_1)
+                    print(result[1]) if len(result) > 1 else print(result)
             
     def main(self):
         print('----------玩家信息----------')
