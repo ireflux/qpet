@@ -834,6 +834,7 @@ class qpet:
                         'cmd=newAct&subtype=124': '开心娃娃机',
                         'cmd=newAct&subtype=43': '每日好礼步步升',
                         'cmd=newAct&subtype=57': '幸运大转盘',
+                        'cmd=newAct&subtype=94': '活跃礼包',
                         'cmd=menuact': '乐斗菜单'
         }
         url = self.base_url + urlencode(params)
