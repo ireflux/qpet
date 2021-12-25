@@ -311,6 +311,19 @@ class qpet:
                 result = self.content_parser(self.protocol + random.choice(gang_list), self.pattern_1)
                 print(result[1]) if len(result) > 1 else print(result)
 
+    # 飞升大作战
+    def ascend_heaven(self):
+        params = {
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'ascendheaven',
+            'op': 'signup',
+            'type': 2
+        }
+        url = self.base_url + urlencode(params)
+        result = self.content_parser(url, self.pattern_1)
+        print(result[1]) if len(result) > 1 else print(result)
+
     # 梦想之旅
     def dream_trip(self):
         params = {
@@ -892,6 +905,8 @@ class qpet:
         self.warrior_inn()
         print('----------问鼎天下----------')
         self.resource_battle()
+        print('----------飞升大作战----------')
+        self.ascend_heaven()
         print('----------梦想之旅----------')
         self.dream_trip()
         print('----------帮派黄金联赛----------')
