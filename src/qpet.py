@@ -849,7 +849,9 @@ class qpet:
                         'cmd=newAct&subtype=57': '幸运大转盘',
                         'cmd=newAct&subtype=94': '活跃礼包',
                         'cmd=menuact': '乐斗菜单',
-                        'cmd=oddeven': '猜单双'
+                        'cmd=oddeven': '猜单双',
+                        'cmd=weekgiftbag': '周周礼包'
+
         }
         url = self.base_url + urlencode(params)
         all_activity_url = self.content_parser(url, '//div[@id="id"]/p/a/@href')
@@ -879,6 +881,11 @@ class qpet:
                         print(result[1]) if len(result) > 1 else print(result)
                         if '很遗憾，您猜错了' in str(result):
                             break
+            elif 'cmd=weekgiftbag' in url:
+                reward_url = self.content_parser(self.protocol + url, '//div[@id="id"]/p/a[contains(@href, "sub=1")]/@href')
+                if reward_url:
+                    result = self.content_parser(self.protocol + reward_url[0], self.pattern_1)
+                    print(result[1]) if len(result) > 1 else print(result)
             else:
                 reward_url = self.content_parser(self.protocol + url, '//div[@id="id"]/p/a[contains(@href, "op=1")]/@href')
                 if reward_url:
