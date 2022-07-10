@@ -141,7 +141,7 @@ class qpet:
             print(result[1]) if len(result) > 1 else print(result)
 
     # 武林大会
-    def martial_arts_conference(self) -> str:
+    def martial_arts_conference(self):
         params = {
             'B_UID': 0,
             'channel': 0,
@@ -154,7 +154,7 @@ class qpet:
         print(result[2]) if len(result) > 2 else print(result[1])
 
     # 武林盟主
-    def martial_lord(self) -> str:
+    def martial_lord(self):
         params = {
                 'B_UID': 0,
                 'channel': 0,
@@ -310,6 +310,33 @@ class qpet:
             if gang_list:
                 result = self.content_parser(self.protocol + random.choice(gang_list), self.pattern_1)
                 print(result[1]) if len(result) > 1 else print(result)
+
+    # 深渊之潮 
+    # params[id]: (1:崎岖斗界/2:魂渡桥/3:须臾之河/4:曲镜空洞/5:光影迷界/6:吞厄源头)
+    def abyssal_tide(self):
+        params = {
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'abysstide',
+            'op': 'enterabyss',
+            'id': 3
+        }
+        url = self.base_url + urlencode(params)
+        self.content_parser(url, self.pattern_1)
+        op_list = ['beginfight', 'endabyss']
+        for num in range(2):
+            for op in op_list:
+                params['op'] = op
+                url = self.base_url + urlencode(params)
+                if 'beginfight' == op:
+                    for i in range(5):
+                        result = self.content_parser(url, self.pattern_1)
+                        print(result[1]) if len(result) > 1 else print(result)
+                        if '憾负' in str(result):
+                            break
+                elif 'endabyss' == op:
+                    result = self.content_parser(url, self.pattern_1)
+                    print(result[1]) if len(result) > 1 else print(result)
 
     # 飞升大作战
     def ascend_heaven(self):
@@ -921,6 +948,8 @@ class qpet:
         self.warrior_inn()
         print('----------问鼎天下----------')
         self.resource_battle()
+        print('----------深渊之潮----------')
+        self.abyssal_tide()
         print('----------飞升大作战----------')
         self.ascend_heaven()
         print('----------梦想之旅----------')
