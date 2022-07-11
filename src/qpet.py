@@ -321,10 +321,11 @@ class qpet:
             'op': 'enterabyss',
             'id': 3
         }
-        url = self.base_url + urlencode(params)
-        self.content_parser(url, self.pattern_1)
         op_list = ['beginfight', 'endabyss']
         for num in range(2):
+            params['op'] = 'enterabyss'
+            url = self.base_url + urlencode(params)
+            self.content_parser(url, self.pattern_1)
             for op in op_list:
                 params['op'] = op
                 url = self.base_url + urlencode(params)
