@@ -531,7 +531,8 @@ class qpet:
             'type': 7,
             'confirm': 1
         }
-        type_list = [7,1]
+        # params[type]: (7:结束战斗/11：自动挑战)
+        type_list = [7,11]
         for item in type_list:
             params['type'] = item
             url = self.base_url + urlencode(params)
@@ -545,7 +546,7 @@ class qpet:
             'channel': 0,
             'g_ut': 1,
             'cmd': 'recommendmanor',
-            'type': 6,
+            'type': 7,
             'page': 1
         }
         url = self.base_url + urlencode(params)
