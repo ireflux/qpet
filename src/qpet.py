@@ -516,6 +516,8 @@ class qpet:
                 for i in range(5):
                     result = self.content_parser(url, self.pattern_1)
                     print(result[3]) if len(result) > 3 else print(result)
+                    if '挑战已结束' in str(result):
+                        break
             else:
                 params['box_id'] = 3
                 url = self.base_url + urlencode(params)
