@@ -1,5 +1,6 @@
 from typing import ByteString, List
 import requests
+from requests.adapters import HTTPAdapter, Retry
 import random
 from urllib.parse import urlencode
 from lxml import etree
@@ -8,6 +9,11 @@ import time
 import os
 
 class qpet:
+
+    session = requests.Session()
+    retries = Retry(total = 3, backoff_factor = 0.3, status_forcelist = [500, 502, 503, 504])
+    session.mount('http://', HTTPAdapter(max_retries=retries))
+    session.mount('https://', HTTPAdapter(max_retries=retries))
 
     def __init__(self, base_url: str, protocol: str, headers: str, proxies: str, pattern_1: str) -> None:
         self.protocol = protocol
@@ -21,7 +27,7 @@ class qpet:
 
     def get_content(self, url: str) -> ByteString:
         try:
-            resp = requests.get(url, proxies = self.proxies, headers = self.headers)
+            resp = session.get(url, proxies = self.proxies, headers = self.headers)
             if 200 == resp.status_code:
                 return resp.content
         except requests.ConnectionError:
