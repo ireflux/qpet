@@ -8,12 +8,13 @@ from datetime import date
 import time
 import os
 
-class qpet:
 
-    session = requests.Session()
-    retries = Retry(total = 3, backoff_factor = 0.3, status_forcelist = [500, 502, 503, 504])
-    session.mount('http://', HTTPAdapter(max_retries=retries))
-    session.mount('https://', HTTPAdapter(max_retries=retries))
+session = requests.Session()
+retries = Retry(total = 3, backoff_factor = 0.3, status_forcelist = [500, 502, 503, 504])
+session.mount('http://', HTTPAdapter(max_retries=retries))
+session.mount('https://', HTTPAdapter(max_retries=retries))
+
+class qpet:
 
     def __init__(self, base_url: str, protocol: str, headers: str, proxies: str, pattern_1: str) -> None:
         self.protocol = protocol
