@@ -367,9 +367,13 @@ class qpet:
             'cmd': 'dreamtrip',
             'sub': 2
         }
-        url = self.base_url + urlencode(params)
-        result = self.content_parser(url, self.pattern_1)
-        print(result[1]) if len(result) > 1 else print(result)
+        # 2: 普通旅行/4: 领取奖励
+        sub_list = [2, 4]
+        for sub in sub_list:
+            params[sub] = sub
+            url = self.base_url + urlencode(params)
+            result = self.content_parser(url, self.pattern_1)
+            print(result[1]) if len(result) > 1 else print(result)
 
     # 帮派黄金联赛
     def faction_league(self):
