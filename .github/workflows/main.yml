@@ -6,8 +6,8 @@ name: qpet job
 on:
   workflow_dispatch:
   schedule:
-    # 北京时间下午一点零五分
-    - cron:  '5 5 * * *'
+    # 北京时间每天上午10点，下午2点，4点
+    - cron:  '0 0 10,14,16 * * ?'
 
 jobs:
   build:
