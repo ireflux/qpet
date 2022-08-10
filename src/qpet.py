@@ -261,12 +261,14 @@ class qpet:
             params['cmd'] = item
             url = self.base_url + urlencode(params)
             if item == 'viewmem':
-                pattern = '//div[@id="id"]/a[contains(@href, "cmd=fight")][position()<5]/@href'
+                pattern = '//div[@id="id"]/a[contains(@href, "cmd=fight")][position()<6]/@href'
             friend_list = self.content_parser(url, pattern)
             for i in friend_list:
                 result = self.content_parser(self.protocol + i, self.pattern_1)
                 if item == 'viewmem':
                     print(result[2]) if len(result) > 2 else print(result)
+                elif item == 'friendlist':
+                    print(result[5]) if len(result) > 5 else print(result)
                 else:
                     print(result[3]) if len(result) > 3 else print(result)
                 if '体力值不足' in str(result):
