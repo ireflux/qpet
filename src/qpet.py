@@ -1,11 +1,18 @@
 from typing import ByteString, List
 import requests
+from requests.adapters import HTTPAdapter, Retry
 import random
 from urllib.parse import urlencode
 from lxml import etree
 from datetime import date
 import time
 import os
+
+
+session = requests.Session()
+retries = Retry(total = 3, backoff_factor = 0.3, status_forcelist = [500, 502, 503, 504])
+session.mount('http://', HTTPAdapter(max_retries=retries))
+session.mount('https://', HTTPAdapter(max_retries=retries))
 
 class qpet:
 
@@ -21,7 +28,7 @@ class qpet:
 
     def get_content(self, url: str) -> ByteString:
         try:
-            resp = requests.get(url, proxies = self.proxies, headers = self.headers)
+            resp = session.get(url, proxies = self.proxies, headers = self.headers)
             if 200 == resp.status_code:
                 return resp.content
         except requests.ConnectionError:
@@ -254,12 +261,14 @@ class qpet:
             params['cmd'] = item
             url = self.base_url + urlencode(params)
             if item == 'viewmem':
-                pattern = '//div[@id="id"]/a[contains(@href, "cmd=fight")][position()<5]/@href'
+                pattern = '//div[@id="id"]/a[contains(@href, "cmd=fight")][position()<6]/@href'
             friend_list = self.content_parser(url, pattern)
             for i in friend_list:
                 result = self.content_parser(self.protocol + i, self.pattern_1)
                 if item == 'viewmem':
                     print(result[2]) if len(result) > 2 else print(result)
+                elif item == 'friendlist':
+                    print(result[5]) if len(result) > 5 else print(result)
                 else:
                     print(result[3]) if len(result) > 3 else print(result)
                 if '体力值不足' in str(result):
@@ -358,11 +367,13 @@ class qpet:
             'channel': 0,
             'g_ut': 1,
             'cmd': 'dreamtrip',
-            'sub': 2
         }
         url = self.base_url + urlencode(params)
-        result = self.content_parser(url, self.pattern_1)
-        print(result[1]) if len(result) > 1 else print(result)
+        #sub: 2: 普通旅行/4: 领取奖励
+        actions = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "sub=2") or contains(@href, "sub=4")]/@href')
+        for action in actions:
+            result = self.content_parser(self.protocol + action, self.pattern_1)
+            print(result[1]) if len(result) > 1 else print(result)
 
     # 帮派黄金联赛
     def faction_league(self):
@@ -516,6 +527,8 @@ class qpet:
                 for i in range(5):
                     result = self.content_parser(url, self.pattern_1)
                     print(result[3]) if len(result) > 3 else print(result)
+                    if '挑战已结束' in str(result):
+                        break
             else:
                 params['box_id'] = 3
                 url = self.base_url + urlencode(params)
@@ -531,7 +544,8 @@ class qpet:
             'type': 7,
             'confirm': 1
         }
-        type_list = [7,1]
+        # params[type]: (7:结束战斗/11：自动挑战)
+        type_list = [7,11]
         for item in type_list:
             params['type'] = item
             url = self.base_url + urlencode(params)
@@ -545,7 +559,7 @@ class qpet:
             'channel': 0,
             'g_ut': 1,
             'cmd': 'recommendmanor',
-            'type': 6,
+            'type': 7,
             'page': 1
         }
         url = self.base_url + urlencode(params)
