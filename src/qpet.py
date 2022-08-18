@@ -158,7 +158,7 @@ class qpet:
         }
         url = self.base_url + urlencode(params)
         result = self.content_parser(url, self.pattern_1)
-        print(result[2]) if len(result) > 2 else print(result[1])
+        print(result[2]) if len(result) > 2 else print(result)
 
     # 武林盟主
     def martial_lord(self):
@@ -199,7 +199,7 @@ class qpet:
                 params['op'] = 'comfirm'
                 url = self.base_url + urlencode(params)
                 result = self.content_parser(url, self.pattern_1)
-                print(result[1]) if len(result) > 1 else print(result[1])
+                print(result[1]) if len(result) > 1 else print(result)
 
     # 巅峰之战
     def decisive_battle(self):
