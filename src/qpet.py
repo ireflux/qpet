@@ -401,9 +401,10 @@ class qpet:
         }
         url = self.base_url + urlencode(params)
         mountain_list = self.content_parser(url, '//div[@id="id"]/a[contains(@href, "op=visitimmortals")]/@href')
+        selected_mountains = []
         if mountain_list:
-            mountains = random.sample(mountain_list, 2)
-        for mountain in mountains:
+            selected_mountains = random.sample(mountain_list, 2)
+        for mountain in selected_mountains:
             # 选择寻访山脉
             self.content_parser(self.protocol + mountain, self.pattern_1)
             # fight
