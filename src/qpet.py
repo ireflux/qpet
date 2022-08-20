@@ -8,12 +8,6 @@ from datetime import date
 import time
 import os
 
-
-session = requests.Session()
-retries = Retry(total = 3, backoff_factor = 0.3, status_forcelist = [500, 502, 503, 504])
-session.mount('http://', HTTPAdapter(max_retries=retries))
-session.mount('https://', HTTPAdapter(max_retries=retries))
-
 class qpet:
 
     def __init__(self, base_url: str, protocol: str, headers: str, proxies: str, pattern_1: str) -> None:
@@ -22,13 +16,17 @@ class qpet:
         self.proxies = proxies
         self.base_url = base_url
         self.pattern_1 = pattern_1
+        session = requests.Session()
+        retries = Retry(total = 3, backoff_factor = 0.3, status_forcelist = [500, 502, 503, 504])
+        session.mount('http://', HTTPAdapter(max_retries=retries))
+        session.mount('https://', HTTPAdapter(max_retries=retries))
 
         # 获取星期(一到日 -> 0到6)
         self.weekday = date.today().weekday()
 
     def get_content(self, url: str) -> ByteString:
         try:
-            resp = session.get(url, proxies = self.proxies, headers = self.headers)
+            resp = self.session.get(url, proxies = self.proxies, headers = self.headers)
             if 200 == resp.status_code:
                 return resp.content
         except requests.ConnectionError:

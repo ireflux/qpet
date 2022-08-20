@@ -6,6 +6,10 @@ class SendMessage:
 
     def __init__(self, content):
         self.content = content
+        session = requests.Session()
+        retries = Retry(total = 3, backoff_factor = 0.3, status_forcelist = [500, 502, 503, 504])
+        session.mount('http://', HTTPAdapter(max_retries=retries))
+        session.mount('https://', HTTPAdapter(max_retries=retries))
 
     # server酱推送
     def send_to_serverJ(self):
@@ -17,7 +21,7 @@ class SendMessage:
                 'title': 'Q宠大乐斗脚本执行详情',
                 'desp': desp
             }
-            return requests.post(url, data)
+            return self.session.post(url, data)
 
     # telegram 消息推送
     def send_to_telegram(self):
@@ -29,7 +33,7 @@ class SendMessage:
                 'chat_id': telegram_chat_id,
                 'text': self.content
             }
-            return requests.post(url, data)
+            return self.session.post(url, data)
 
 if __name__ == "__main__":
     content = Path('./result.txt').read_text()
