@@ -1,5 +1,6 @@
 import os
 import requests
+from requests.adapters import HTTPAdapter, Retry
 from pathlib import Path
 
 class SendMessage:
