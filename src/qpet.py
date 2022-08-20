@@ -18,8 +18,8 @@ class qpet:
         self.pattern_1 = pattern_1
         self.session = requests.Session()
         retries = Retry(total = 3, backoff_factor = 0.3, status_forcelist = [500, 502, 503, 504])
-        session.mount('http://', HTTPAdapter(max_retries=retries))
-        session.mount('https://', HTTPAdapter(max_retries=retries))
+        self.session.mount('http://', HTTPAdapter(max_retries=retries))
+        self.session.mount('https://', HTTPAdapter(max_retries=retries))
 
         # 获取星期(一到日 -> 0到6)
         self.weekday = date.today().weekday()

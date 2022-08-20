@@ -8,8 +8,8 @@ class SendMessage:
         self.content = content
         self.session = requests.Session()
         retries = Retry(total = 3, backoff_factor = 0.3, status_forcelist = [500, 502, 503, 504])
-        session.mount('http://', HTTPAdapter(max_retries=retries))
-        session.mount('https://', HTTPAdapter(max_retries=retries))
+        self.session.mount('http://', HTTPAdapter(max_retries=retries))
+        self.session.mount('https://', HTTPAdapter(max_retries=retries))
 
     # server酱推送
     def send_to_serverJ(self):
