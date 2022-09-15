@@ -24,5 +24,5 @@ _  __ `/__  __ \  _ \  __/
 4. 添加 Name 为 `QPET_COOKIE`，Value 为 `获取到的 cookie`
 5. (可选)微信接收运行日志: 添加 Name 为 `SERVERJ_SEND_KEY`，Value 为从 [Server酱](https://sct.ftqq.com/) 获取到的 `SENDKEY`
 6. (可选) Telegram 接收运行日志: 添加 Name 为 `TELEGRAM_BOT_TOKEN`，Value 为 Telegram Bot 的 token；添加 Name 为 `TELEGRAM_CHAT_ID`，Value 为获取到的 chat_id. 具体创建 Telegram Bot，获取 token 和 chat_id 的操作流程可查看 [Telegram Bot API](https://core.telegram.org/bots/api#getting-updates) 文档
-7. ~~每日 13：05 自动执行（由于cookie有效期太短，自动执行意义不大）~~ 手动进入 `Actions -> qpet job -> Run workflow` 执行
+7. 手动进入 `Actions -> qpet job -> Run workflow` 执行 ~~或者每日 13：05 自动执行（由于cookie有效期太短，自动执行意义不大，不再自动）~~ 
 
