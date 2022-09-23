@@ -98,6 +98,22 @@ class qpet:
             result = self.content_parser(url, self.pattern_1)
             print(result[1]) if len(result) > 1 else print(result)
 
+    # 大侠回归三重好礼
+    def return_gift(self):
+        params = {
+            'B_UID': 0,
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'newAct',
+            'subtype': 173,
+            'op': 1
+        }
+        url = self.base_url + urlencode(params)
+        gift_urls = self.content_parser(url, '//div[@id="id"]/p/a[contains(@href, "op=2")]/@href')
+        for gift in gift_urls:
+            result = self.content_parser(self.protocol + gift, self.pattern_1)
+            print(result[1]) if len(result) > 1 else print(result)
+
     # 邪神秘宝
     def ten_lottery(self):
         params = {
@@ -942,6 +958,8 @@ class qpet:
         self.exp()
         print('----------每日奖励----------')
         self.daily_gift()
+        print('----------大侠回归三重好礼----------')
+        self.return_gift()
         print('----------邪神秘宝----------')
         self.ten_lottery()
         print('----------帮派远征军----------')
