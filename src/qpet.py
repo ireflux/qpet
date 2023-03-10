@@ -128,6 +128,19 @@ class qpet:
             result = self.content_parser(url, self.pattern_1)
             print(result[1]) if len(result) > 1 else print(result)
 
+    # 华山论剑
+    def knight_arena(self):
+        params = {
+            'channel': 0,
+            'g_ut': 1,
+            'cmd': 'knightarena',
+            'op': 'challenge'
+        }
+        url = self.base_url + urlencode(params)
+        for item in range(8):
+            result = self.content_parser(url, self.pattern_1)
+            print(result[1:3]) if len(result) > 2 else print(result)
+
     # 帮派远征军
     def faction_army(self):
         params = {
@@ -962,6 +975,8 @@ class qpet:
         self.return_gift()
         print('----------邪神秘宝----------')
         self.ten_lottery()
+        print('----------华山论剑----------')
+        self.knight_arena()
         print('----------帮派远征军----------')
         self.faction_army()
         print('----------任务派遣中心----------')
