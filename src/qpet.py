@@ -140,7 +140,9 @@ class qpet:
         for item in range(8):
             result = self.content_parser(url, self.pattern_1)
             print(result[1:3]) if len(result) > 2 else print(result)
-
+            if '门票不足' in str(result):
+                break
+            
     # 帮派远征军
     def faction_army(self):
         params = {
