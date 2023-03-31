@@ -17,20 +17,19 @@ class qpet:
         self.base_url = base_url
         self.pattern_1 = pattern_1
         self.session = requests.Session()
-        retries = Retry(total = 3, backoff_factor = 0.3, status_forcelist = [500, 502, 503, 504])
+        retries = Retry(total=3, backoff_factor=0.3, status_forcelist=[500, 502, 503, 504])
         self.session.mount('http://', HTTPAdapter(max_retries=retries))
         self.session.mount('https://', HTTPAdapter(max_retries=retries))
-
         # 获取星期(一到日 -> 0到6)
         self.weekday = date.today().weekday()
 
     def get_content(self, url: str) -> ByteString:
         try:
             resp = self.session.get(url, proxies = self.proxies, headers = self.headers)
-            if 200 == resp.status_code:
-                return resp.content
-        except requests.ConnectionError:
-            raise ConnectionError
+            resp.raise_for_status()
+            return resp.content
+        except Exception as e:
+            raise Exception(f"Failed to parse content for url {url}, error message: {e}")
 
     def content_parser(self, url: str, pattern: str) -> List[str]:
         content = self.get_content(url)
