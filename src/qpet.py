@@ -971,7 +971,6 @@ class qpet:
         print('----------逛一逛----------')
         from modules.take_stroll import take_stroll 
         take_stroll(self.base_url, self.get_content)
-        exit(0)
 
         print('----------领取徒弟经验----------')
         self.exp()
